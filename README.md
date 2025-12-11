@@ -8,17 +8,11 @@ Differential expression (DE) analysis
 
 Machine learning model development & SHAP
 
+
+
 1. Dataset Preparation & Subtype Assignment
 
 Script: Dataset preparation.ipynb
-Inputs:
-  final.csv
-  final_non.csv
-
-Outputs:
-  final_with_subtypes_v2.csv
-  only_subtypes_v2.csv
-  clustering_output.pkl
 
 Steps performed:
 
