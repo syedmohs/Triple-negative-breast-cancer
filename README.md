@@ -1,4 +1,4 @@
-📌 RUN SHEET — Complete Pipeline
+RUN SHEET — Complete Pipeline
 
 This run-sheet describes how to execute the full workflow for:
 
@@ -8,7 +8,7 @@ Differential expression (DE) analysis
 
 Machine learning model development & SHAP
 
-✅ 1. Dataset Preparation & Subtype Assignment
+1. Dataset Preparation & Subtype Assignment
 
 Script: Dataset preparation.ipynb
 Inputs:
