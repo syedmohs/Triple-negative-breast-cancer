@@ -18,9 +18,13 @@ Steps performed:
 
 Load combined gene expression matrix
   Train–test split
+  
   Standardization (StandardScaler)
+  
   K-means clustering (k = 4)
+  
   Assign subtypes: C1–C4, and non-TNBC as C0
+  
   Save clustered train/test matrices + metadata to clustering_output.pkl
 
 2. TNBC subtyping
