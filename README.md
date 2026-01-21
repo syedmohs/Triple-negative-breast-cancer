@@ -1,71 +1,90 @@
-RUN SHEET — Complete Pipeline
+## RUN SHEET — Complete Pipeline
 
-This run-sheet describes how to execute the full workflow for:
+This run sheet describes how to execute the full end-to-end workflow for:
 
-Dataset preparation & subtype clustering
+- Dataset preparation & subtype clustering  
+- Differential expression (DE) analysis  
+- Machine learning model development & SHAP-based interpretation  
 
-Differential expression (DE) analysis
+---
 
-Machine learning model development & SHAP
+## 1. Dataset Preparation & Subtype Assignment
 
+**Script:** `Dataset preparation.ipynb`
 
+### Steps Performed
+- Load combined gene expression matrix  
+- Train–test split  
+- Feature standardization using `StandardScaler`  
+- K-means clustering (`k = 4`)  
+- Assign subtypes:
+  - **C1–C4**: TNBC molecular subtypes  
+  - **C0**: Non-TNBC samples  
+- Save clustered train/test matrices and metadata to:
+  - `clustering_output.pkl`
 
-1. Dataset Preparation & Subtype Assignment
+---
 
-Script: Dataset preparation.ipynb
+## 2. TNBC Subtyping
 
-Steps performed:
+**Script:** `Subtyping.ipynb`
 
-Load combined gene expression matrix
-  Train–test split
-  
-  Standardization (StandardScaler)
-  
-  K-means clustering (k = 4)
-  
-  Assign subtypes: C1–C4, and non-TNBC as C0
-  
-  Save clustered train/test matrices + metadata to clustering_output.pkl
+- Loads clustering outputs  
+- Finalizes TNBC subtype assignments for downstream analysis  
 
-2. TNBC subtyping
-Script: Subtyping.ipynb
+---
 
-3. Differential Expression (DE) Analysis
+## 3. Differential Expression (DE) Analysis
 
-Script: DEG.R
+**Script:** `DEG.R`
 
-Steps performed:
+### Steps Performed
+- Construct `limma` design matrix  
+- Perform subtype-vs-rest contrasts:
+  - C1 vs rest  
+  - C2 vs rest  
+  - C3 vs rest  
+  - C4 vs rest  
+- Extract differentially expressed genes (DEGs) using:
+  - `|logFC| > 1`  
+  - `adj.p < 0.05`  
+- Save DEG expression matrices for machine learning  
 
-  limma design matrix setup
+---
 
-  Subtype-vs-rest contrasts (C1, C2, C3, C4)
+## 4. Machine Learning Model Development & Interpretation
 
-  Extraction of DEGs: |logFC| > 1, adj.p < 0.05
+**Script:** `Model Development.ipynb`
 
-  Save DEG expression matrices for ML
+### Steps Performed
+- Combine all DEG files using column-wise union  
+- Remove highly correlated features (`> 0.80`)  
+- Recursive Feature Elimination (RFE) to select top **50 features**  
+- Train models using **stratified 5-fold cross-validation**  
+- Evaluate performance on a held-out test set  
+- Compute **SHAP values** for model interpretability  
 
-4. Machine Learning Model Development
+---
 
-Script: Model Development.ipynb
+## Execution Order
 
-Steps performed:
+Run the scripts in the following order:
 
-  Combine all DEG files (column-union)
+1. `Dataset preparation.ipynb`  
+2. `Subtyping.ipynb`  
+3. `DEG.R`  
+4. `Model Development.ipynb`  
 
-  Drop correlated features (>0.80)
+---
 
-  RFE feature selection (n = 50)
+## Datasets
 
-  Train models with stratified 5-fold CV
+The datasets could not be uploaded due to large file size constraints. They can be downloaded from the **Gene Expression Omnibus (GEO)**:
 
-  Evaluate on held-out test set
+- `GSE18864`  
+- `GSE65194`  
+- `GSE95700`  
+- `GSE76275`  
+- `GSE58812`  
+- `GSE83937`  
 
-  Compute SHAP values for feature interpretation
-
-1. Run "Dataset preparation.ipynb"
-2. Run "Subtyping.ipynb"
-3. Run "DEG.R"
-4. Run "Model Development.ipynb"
-
-Datasets (Could not be uploaded due to large file size, can be downloaded from GEO):
-GSE18864, GSE65194, GSE95700, GSE76275, GSE 58812, GSE83937
